@@ -1,0 +1,43 @@
+import { getDb } from '.'
+import type { QuizRecord } from '../types'
+
+export const quizRecordRepository = {
+  async findAll(): Promise<QuizRecord[]> {
+    const db = await getDb()
+    const result = db.exec('SELECT * FROM quiz_records')
+    if (result.length === 0) return []
+    return result[0].values.map(rowToQuizRecord)
+  },
+
+  async findByQuizId(quizId: string): Promise<QuizRecord[]> {
+    const db = await getDb()
+    const result = db.exec('SELECT * FROM quiz_records WHERE quiz_id = ?', [quizId])
+    if (result.length === 0) return []
+    return result[0].values.map(rowToQuizRecord)
+  },
+
+  async bulkInsert(records: QuizRecord[]): Promise<void> {
+    const db = await getDb()
+    for (const record of records) {
+      db.run(
+        `INSERT OR REPLACE INTO quiz_records
+          (id, quiz_run_id, quiz_id, user_answer, is_correct, created_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [record.id, record.quiz_run_id, record.quiz_id, record.user_answer, record.is_correct ? 1 : 0, record.created_at],
+      )
+    }
+  },
+}
+
+function rowToQuizRecord(row: SqlValue[]): QuizRecord {
+  return {
+    id: row[0] as string,
+    quiz_run_id: row[1] as string,
+    quiz_id: row[2] as string,
+    user_answer: row[3] as string,
+    is_correct: row[4] === 1,
+    created_at: row[5] as string,
+  }
+}
+
+type SqlValue = string | number | null | Uint8Array
