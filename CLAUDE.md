@@ -3,3 +3,5 @@
 ## Documentation
 
 MVP vs production implementation differences are documented in [docs/](docs/).
+
+All documentation files must be written in English.
