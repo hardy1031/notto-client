@@ -6,9 +6,9 @@ export function HomePage() {
   return (
     <div>
       <h1>Home</h1>
-      <button onClick={() => navigate('/quiz')}>Quiz</button>
-      <button onClick={() => navigate('/quiz-list')}>Quiz List</button>
-      <button>Generate</button>
+      <button onClick={() => navigate('/practice')}>Practice</button>
+      <button onClick={() => navigate('/quiz-history')}>Quiz History</button>
+      <button onClick={() => navigate('/my-notes')}>My Notes</button>
     </div>
   )
 }

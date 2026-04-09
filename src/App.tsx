@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { LoginPage } from './pages/LoginPage'
 import { HomePage } from './pages/HomePage'
-import { QuizPage } from './pages/QuizPage'
-import { QuizListPage } from './pages/QuizListPage'
+import { PracticePage } from './pages/PracticePage'
+import { QuizHistoryPage } from './pages/QuizHistoryPage'
+import { MyNotesPage } from './pages/MyNotesPage'
 
 function App() {
   return (
@@ -11,8 +12,9 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/quiz" element={<QuizPage />} />
-        <Route path="/quiz-list" element={<QuizListPage />} />
+        <Route path="/practice" element={<PracticePage />} />
+        <Route path="/quiz-history" element={<QuizHistoryPage />} />
+        <Route path="/my-notes" element={<MyNotesPage />} />
       </Routes>
     </BrowserRouter>
   )
