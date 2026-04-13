@@ -13,7 +13,7 @@ export function useSync() {
   const sync = useCallback(async () => {
     setStatus('syncing')
     try {
-      const data = await api.getMe()
+      const data = await api.sync({ notebooks: [], notes: [], quiz_runs: [] })
       await contextObjectRepository.bulkInsert(data.context_objects)
       await quizRepository.bulkInsert(data.quizzes)
       for (const run of data.quiz_runs) {

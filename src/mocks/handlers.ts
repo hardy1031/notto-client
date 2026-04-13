@@ -15,20 +15,12 @@ export const handlers = [
     })
   }),
 
-  http.get('/me', () => {
+  http.post('/sync', () => {
     return HttpResponse.json({
-      user: {
-        id: 'mock-user-uuid',
-        user_name: 'Hardy',
-        email: 'hardy@example.com',
-        first_language: 'ja',
-        target_language: 'ko',
-        created_at: '2026-04-01T12:00:00Z',
-        updated_at: '2026-04-01T12:00:00Z',
-      },
       notebooks: [
         {
           id: 'notebook-uuid-1',
+          user_id: 'mock-user-uuid',
           name: 'スラング',
           created_at: '2026-04-01T12:00:00Z',
           updated_at: '2026-04-01T12:00:00Z',
@@ -53,6 +45,7 @@ export const handlers = [
       context_objects: [
         {
           id: 'context-uuid-1',
+          note_piece_id: 'note-piece-uuid-1',
           note_id: 'note-uuid-1',
           expression: '겠냐?',
           base_meaning: 'Do you think ~?',
@@ -60,7 +53,6 @@ export const handlers = [
           tone: 'rough',
           formality: 'casual',
           is_slang: true,
-          usage_scene: ['argument', 'teasing', 'strong denial'],
           example_dialogue: [
             { speaker: 'A', text: '이거 내가 할 수 있겠지?' },
             { speaker: 'B', text: '네가 하겠냐?' },
@@ -70,6 +62,7 @@ export const handlers = [
         },
         {
           id: 'context-uuid-2',
+          note_piece_id: 'note-piece-uuid-2',
           note_id: 'note-uuid-2',
           expression: '어이가 없다',
           base_meaning: 'to be dumbfounded',
@@ -77,7 +70,6 @@ export const handlers = [
           tone: 'exasperated',
           formality: 'casual',
           is_slang: false,
-          usage_scene: ['reacting to absurd situations', 'disbelief'],
           example_dialogue: [
             { speaker: 'A', text: '나 시험 공부 안 했는데 만점 받았어' },
             { speaker: 'B', text: '진짜 어이가 없다' },
@@ -120,21 +112,20 @@ export const handlers = [
     })
   }),
 
-  http.post('/quizzes', () => {
+  http.post('/interpret', () => {
     return HttpResponse.json({
-      synced: { notebooks: [], notes: [] },
       generated: [
         {
           context_object: {
             id: 'context-uuid-3',
+            note_piece_id: 'note-piece-uuid-3',
             note_id: 'note-uuid-3',
             expression: '대박',
             base_meaning: 'jackpot / huge',
-            actual_nuance: 'Wow / No way / That\'s insane — used for both good and bad surprises',
+            actual_nuance: "Wow / No way / That's insane — used for both good and bad surprises",
             tone: 'excited',
             formality: 'casual',
             is_slang: true,
-            usage_scene: ['surprise', 'excitement', 'disbelief'],
             example_dialogue: [
               { speaker: 'A', text: '나 오늘 복권 당첨됐어' },
               { speaker: 'B', text: '대박!' },

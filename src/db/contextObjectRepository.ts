@@ -14,12 +14,12 @@ export const contextObjectRepository = {
     for (const co of contextObjects) {
       db.run(
         `INSERT OR REPLACE INTO context_objects
-          (id, note_id, expression, base_meaning, actual_nuance, tone, formality, is_slang, usage_scene, example_dialogue, created_at, updated_at)
+          (id, note_piece_id, note_id, expression, base_meaning, actual_nuance, tone, formality, is_slang, example_dialogue, created_at, updated_at)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          co.id, co.note_id, co.expression, co.base_meaning, co.actual_nuance,
+          co.id, co.note_piece_id, co.note_id, co.expression, co.base_meaning, co.actual_nuance,
           co.tone, co.formality, co.is_slang ? 1 : 0,
-          JSON.stringify(co.usage_scene), JSON.stringify(co.example_dialogue),
+          JSON.stringify(co.example_dialogue),
           co.created_at, co.updated_at,
         ],
       )
@@ -30,14 +30,14 @@ export const contextObjectRepository = {
 function rowToContextObject(row: SqlValue[]): ContextObject {
   return {
     id: row[0] as string,
-    note_id: row[1] as string,
-    expression: row[2] as string,
-    base_meaning: row[3] as string,
-    actual_nuance: row[4] as string,
-    tone: row[5] as string,
-    formality: row[6] as ContextObject['formality'],
-    is_slang: row[7] === 1,
-    usage_scene: JSON.parse(row[8] as string),
+    note_piece_id: row[1] as string,
+    note_id: row[2] as string,
+    expression: row[3] as string,
+    base_meaning: row[4] as string,
+    actual_nuance: row[5] as string,
+    tone: row[6] as string,
+    formality: row[7] as ContextObject['formality'],
+    is_slang: row[8] === 1,
     example_dialogue: JSON.parse(row[9] as string),
     created_at: row[10] as string,
     updated_at: row[11] as string,

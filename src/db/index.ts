@@ -47,8 +47,18 @@ function runMigrations(db: Database) {
   `)
 
   db.run(`
+    CREATE TABLE IF NOT EXISTS note_pieces (
+      id TEXT PRIMARY KEY,
+      note_id TEXT NOT NULL,
+      "order" INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    )
+  `)
+
+  db.run(`
     CREATE TABLE IF NOT EXISTS context_objects (
       id TEXT PRIMARY KEY,
+      note_piece_id TEXT NOT NULL,
       note_id TEXT NOT NULL,
       expression TEXT NOT NULL,
       base_meaning TEXT NOT NULL,
@@ -56,7 +66,6 @@ function runMigrations(db: Database) {
       tone TEXT NOT NULL,
       formality TEXT NOT NULL CHECK(formality IN ('casual', 'neutral', 'formal')),
       is_slang INTEGER NOT NULL,
-      usage_scene TEXT NOT NULL,
       example_dialogue TEXT NOT NULL,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
@@ -98,6 +107,7 @@ function runMigrations(db: Database) {
   // indexes
   db.run(`CREATE INDEX IF NOT EXISTS idx_notebooks_user_id ON notebooks(user_id)`)
   db.run(`CREATE INDEX IF NOT EXISTS idx_notes_notebook_id ON notes(notebook_id)`)
+  db.run(`CREATE INDEX IF NOT EXISTS idx_note_pieces_note_id ON note_pieces(note_id)`)
   db.run(`CREATE INDEX IF NOT EXISTS idx_context_objects_note_id ON context_objects(note_id)`)
   db.run(`CREATE INDEX IF NOT EXISTS idx_quizzes_context_object_id ON quizzes(context_object_id)`)
   db.run(`CREATE INDEX IF NOT EXISTS idx_quiz_runs_user_id ON quiz_runs(user_id)`)

@@ -27,8 +27,16 @@ export interface Note {
   updated_at: string
 }
 
+export interface NotePiece {
+  id: string
+  note_id: string
+  order: number
+  created_at: string
+}
+
 export interface ContextObject {
   id: string
+  note_piece_id: string
   note_id: string
   expression: string
   base_meaning: string
@@ -36,7 +44,6 @@ export interface ContextObject {
   tone: string
   formality: Formality
   is_slang: boolean
-  usage_scene: string[]
   example_dialogue: { speaker: string; text: string }[]
   created_at: string
   updated_at: string

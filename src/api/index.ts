@@ -1,8 +1,7 @@
 import { apiClient } from './client'
 import type { User, Notebook, Note, ContextObject, Quiz, QuizRun, QuizRecord } from '../types'
 
-export interface MeResponse {
-  user: User
+export interface SyncResponse {
   notebooks: Notebook[]
   notes: Note[]
   context_objects: ContextObject[]
@@ -11,8 +10,7 @@ export interface MeResponse {
   quiz_records: QuizRecord[]
 }
 
-export interface GenerateResponse {
-  synced: { notebooks: unknown[]; notes: unknown[] }
+export interface InterpretResponse {
   generated: {
     context_object: ContextObject
     quizzes: Quiz[]
@@ -25,9 +23,15 @@ export interface QuizRunResponse {
 }
 
 export const api = {
-  getMe: () => apiClient.get<MeResponse>('/me'),
+  sync: (body: {
+    notebooks: Notebook[]
+    notes: Note[]
+    quiz_runs: QuizRun[]
+  }) => apiClient.post<SyncResponse>('/sync', body),
 
-  generate: () => apiClient.post<GenerateResponse>('/quizzes'),
+  interpret: () => apiClient.post<InterpretResponse>('/interpret'),
+
+  getUser: () => apiClient.get<{ user: User }>('/auth/me'),
 
   submitQuizRun: (body: {
     started_at: string
