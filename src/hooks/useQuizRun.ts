@@ -9,9 +9,6 @@ import type { ContextObject, Quiz, QuizRecord } from '../types'
 
 const QUIZ_RUN_SIZE = 10
 
-function shuffle<T>(arr: T[]): T[] {
-  return [...arr].sort(() => Math.random() - 0.5)
-}
 
 type RunStatus = 'loading' | 'in_progress' | 'finished'
 
@@ -21,6 +18,7 @@ interface PendingRecord {
   user_answer: string
   is_correct: boolean
 }
+
 
 export function useQuizRun() {
   const [status, setStatus] = useState<RunStatus>('loading')
@@ -46,11 +44,10 @@ export function useQuizRun() {
     load()
   }, [])
 
-  const submitAnswer = useCallback((userAnswer: string) => {
+  const submitAnswer = useCallback((userAnswer: string, choices: string[]) => {
     const current = quizzes[currentIndex]
     const isCorrect = userAnswer.trim() === current.answer.trim()
 
-    const choices = shuffle(current.choice_pool).slice(0, 4)
     const record: PendingRecord = {
       quiz_id: current.id,
       choices,

@@ -118,7 +118,7 @@ function QuizSession() {
 
   const handleSubmit = () => {
     if (!selected || !currentQuiz) return
-    submitAnswer(selected)
+    submitAnswer(selected, options)
     setSelected(null)
   }
 
