@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { api } from '../api'
+import { contextObjectRepository } from '../db/contextObjectRepository'
 import { quizRepository } from '../db/quizRepository'
 import { quizRunRepository } from '../db/quizRunRepository'
 import { quizRecordRepository } from '../db/quizRecordRepository'
 import { selectQuizzes } from '../domain/recommendation'
-import type { Quiz, QuizRecord } from '../types'
+import type { ContextObject, Quiz, QuizRecord } from '../types'
 
 const QUIZ_RUN_SIZE = 10
 
@@ -19,6 +20,7 @@ interface PendingRecord {
 export function useQuizRun() {
   const [status, setStatus] = useState<RunStatus>('loading')
   const [quizzes, setQuizzes] = useState<Quiz[]>([])
+  const [contextObjects, setContextObjects] = useState<ContextObject[]>([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [records, setRecords] = useState<PendingRecord[]>([])
   const [startedAt] = useState(() => new Date().toISOString())
@@ -26,10 +28,14 @@ export function useQuizRun() {
 
   useEffect(() => {
     const load = async () => {
-      const allQuizzes = await quizRepository.findAll()
-      const allRecords = await quizRecordRepository.findAll()
+      const [allQuizzes, allRecords, allCOs] = await Promise.all([
+        quizRepository.findAll(),
+        quizRecordRepository.findAll(),
+        contextObjectRepository.findAll(),
+      ])
       const selected = selectQuizzes(allQuizzes, allRecords, QUIZ_RUN_SIZE)
       setQuizzes(selected)
+      setContextObjects(allCOs)
       setStatus('in_progress')
     }
     load()
@@ -90,6 +96,8 @@ export function useQuizRun() {
   return {
     status,
     currentQuiz: quizzes[currentIndex] ?? null,
+    currentContextObject: contextObjects.find((co) => co.id === quizzes[currentIndex]?.context_object_id) ?? null,
+    contextObjects,
     currentIndex,
     total: quizzes.length,
     records,

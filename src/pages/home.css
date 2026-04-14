@@ -1,0 +1,136 @@
+.home-page {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(180deg, #f1f3f9 0%, #fff 50%, #fff 100%);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+/* Header */
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 142px;
+  height: 78px;
+  flex-shrink: 0;
+}
+
+/* Top decorative area */
+.home-deco {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 200px;
+}
+
+.home-deco-triangle {
+  width: 358px;
+  height: 310px;
+  position: absolute;
+}
+
+.home-deco-circle {
+  width: 335px;
+  height: 335px;
+  border-radius: 50%;
+  border: 40px solid #dce8f5;
+  position: absolute;
+  left: calc(50% - 30px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Bottom cards area */
+.home-bottom {
+  background: #f1f3f9;
+  padding: 48px 142px 64px;
+  flex-shrink: 0;
+}
+
+.home-cards {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+/* Card */
+.home-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 4.8px rgba(0, 0, 0, 0.1);
+  padding: 36px 28px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  flex: 1;
+  max-width: 240px;
+}
+
+.home-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Icons */
+.home-card-icon-circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #e8eef8;
+}
+
+.home-card-icon-triangle {
+  width: 0;
+  height: 0;
+  border-left: 50px solid transparent;
+  border-right: 50px solid transparent;
+  border-bottom: 86px solid #e8eef8;
+  /* shift down to center visually */
+  margin-top: 14px;
+  margin-bottom: 0;
+}
+
+/* Triangle wrapper to keep 100px height zone */
+.home-card-icon-triangle-wrap {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-card-icon-square {
+  width: 100px;
+  height: 100px;
+  border-radius: 12px;
+  background: #f2f4fa;
+}
+
+/* Card text */
+.home-card-title {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: #213163;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.home-card-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #9daad1;
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0;
+}

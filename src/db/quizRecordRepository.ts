@@ -9,6 +9,13 @@ export const quizRecordRepository = {
     return result[0].values.map(rowToQuizRecord)
   },
 
+  async findByRunId(runId: string): Promise<QuizRecord[]> {
+    const db = await getDb()
+    const result = db.exec('SELECT * FROM quiz_records WHERE quiz_run_id = ?', [runId])
+    if (result.length === 0) return []
+    return result[0].values.map(rowToQuizRecord)
+  },
+
   async findByQuizId(quizId: string): Promise<QuizRecord[]> {
     const db = await getDb()
     const result = db.exec('SELECT * FROM quiz_records WHERE quiz_id = ?', [quizId])

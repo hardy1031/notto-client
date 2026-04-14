@@ -54,3 +54,13 @@ Local SQLite becomes a **cache** of the Supabase cloud DB. On startup, the app s
 | Source of truth | Server (Joplin proxy) | Supabase PostgreSQL |
 | Local SQLite role | Working DB for the session | Offline cache + fast reads |
 | On app start | `GET /me` to rebuild from server | `GET /me` to sync latest from server |
+
+---
+
+## Quiz Screen Data Source
+
+The quiz screen reads quizzes directly from local SQLite — there is no API endpoint for fetching quizzes.
+
+- On app start, `GET /me` syncs all user data (including quizzes) from the server into the in-memory SQLite DB.
+- The quiz screen queries local SQLite for quiz data at runtime.
+- This applies to both MVP and production.

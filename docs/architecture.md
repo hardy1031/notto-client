@@ -79,6 +79,8 @@ The mock handlers in `src/mocks/handlers.ts` are the authoritative description o
 ```
 src/
 ├── api/          # HTTP client and API method definitions
+├── assets/       # Static assets (images, fonts, icons)
+├── components/   # Reusable UI components shared across pages
 ├── db/           # SQLite layer — schema, migrations, repositories
 ├── domain/       # Pure business logic (no React, no I/O)
 ├── hooks/        # Custom React hooks — orchestrate api + db + state
@@ -118,8 +120,21 @@ The orchestration layer. Each hook:
 | Hook | Responsibility |
 |---|---|
 | `useSync` | `GET /me` → bulk insert into local DB on app load |
+| `useSyncContext` | Wraps `useSync` in a React Context (`SyncProvider` + `useSyncStatus`). `SyncProvider` lives in `App.tsx` and calls `sync()` once at startup. Pages read sync status via `useSyncStatus()`. |
+| `useQuizHistory` | Load all quiz runs + records from local DB once sync is done |
+| `useQuizReview` | Load records, quizzes, and context objects for a specific run |
+| `useQuizRun` | Load quizzes + context objects, run a session, save results locally, POST to server |
 | `useGenerate` | `POST /quizzes` → insert AI-generated quizzes |
-| `useQuizRun` | Load quizzes, run a session, save results locally, POST to server |
+
+### `assets/`
+
+Static files (images, icons, fonts) imported directly by components.
+
+### `components/`
+
+Reusable UI components shared across two or more pages. Each component lives in its own file. Components are pure presentational or lightly stateful — they do not call `api/` or `db/` directly.
+
+If a component is only used by a single page, keep it in that page's file until it is needed elsewhere.
 
 ### `mocks/`
 

@@ -21,7 +21,8 @@ export function useSync() {
       }
       await quizRecordRepository.bulkInsert(data.quiz_records)
       setStatus('done')
-    } catch {
+    } catch (e) {
+      console.error('[useSync] sync failed:', e)
       setStatus('error')
     }
   }, [])
