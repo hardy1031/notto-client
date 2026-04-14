@@ -7,24 +7,7 @@ import type { ContextObject, Quiz } from '../types'
 import './shared.css'
 import './practice.css'
 
-function shuffle<T>(arr: T[]): T[] {
-  return [...arr].sort(() => Math.random() - 0.5)
-}
 
-function buildOptions(quiz: Quiz, allContextObjects: ContextObject[]): string[] {
-  const correct = quiz.answer
-
-  if (quiz.type === 'fill_metadata') {
-    if (['casual', 'neutral', 'formal'].includes(correct)) {
-      return shuffle(['casual', 'neutral', 'formal'])
-    }
-  }
-
-  const distractors = allContextObjects
-    .map((co) => co.expression)
-    .filter((e) => e !== correct)
-  return shuffle([correct, ...shuffle(distractors).slice(0, 3)])
-}
 
 function quizTypeLabel(quiz: Quiz): string {
   switch (quiz.type) {
@@ -125,13 +108,13 @@ function ContextCard({ contextObject, blankText }: { contextObject: ContextObjec
 
 function QuizSession() {
   const navigate = useNavigate()
-  const { status, currentQuiz, currentContextObject, contextObjects, currentIndex, total, records, submitAnswer } = useQuizRun()
+  const { status, currentQuiz, currentContextObject, currentIndex, total, records, submitAnswer } = useQuizRun()
   const [selected, setSelected] = useState<string | null>(null)
 
   const options = useMemo(() => {
     if (!currentQuiz) return []
-    return buildOptions(currentQuiz, contextObjects)
-  }, [currentQuiz?.id, contextObjects.length])
+    return [...currentQuiz.choice_pool].sort(() => Math.random() - 0.5).slice(0, 4)
+  }, [currentQuiz?.id])
 
   const handleSubmit = () => {
     if (!selected || !currentQuiz) return

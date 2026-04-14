@@ -55,7 +55,7 @@ export interface Quiz {
   type: QuizType
   question_sentence: string
   answer: string
-  choices: string[]
+  choice_pool: string[]
   created_at: string
   updated_at: string
 }
@@ -71,6 +71,7 @@ export interface QuizRecord {
   id: string
   quiz_run_id: string
   quiz_id: string
+  choices: string[]
   user_answer: string
   is_correct: boolean
   created_at: string

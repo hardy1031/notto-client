@@ -64,10 +64,9 @@ export function QuizHistoryPage() {
                 </td>
               </tr>
             ) : (
-              rows.map((row, i) => {
+              rows.map((row) => {
                 const correct = row.records.filter((r) => r.is_correct).length
                 const total = row.records.length
-                const isFirst = i === 0
                 return (
                   <tr key={row.run.id}>
                     <td>{formatDate(row.run.started_at)}</td>
@@ -77,13 +76,13 @@ export function QuizHistoryPage() {
                     <td>
                       <div className="qh-actions">
                         <button
-                          className={`qh-btn ${isFirst ? 'qh-btn--retry' : 'qh-btn--retry-alt'}`}
+                          className="qh-btn"
                           onClick={() => navigate('/practice')}
                         >
                           Retry
                         </button>
                         <button
-                          className={`qh-btn ${isFirst ? 'qh-btn--review-active' : 'qh-btn--review-alt'}`}
+                          className="qh-btn"
                           onClick={() => navigate(`/quiz-review/${row.run.id}`)}
                         >
                           Review

@@ -79,7 +79,7 @@ function runMigrations(db: Database) {
       type TEXT NOT NULL,
       question_sentence TEXT NOT NULL,
       answer TEXT NOT NULL,
-      choices TEXT NOT NULL,
+      choice_pool TEXT NOT NULL,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )
@@ -99,6 +99,7 @@ function runMigrations(db: Database) {
       id TEXT PRIMARY KEY,
       quiz_run_id TEXT NOT NULL,
       quiz_id TEXT NOT NULL,
+      choices TEXT NOT NULL,
       user_answer TEXT NOT NULL,
       is_correct INTEGER NOT NULL,
       created_at TEXT NOT NULL

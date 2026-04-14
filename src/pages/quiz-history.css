@@ -1,7 +1,7 @@
 /* Page title */
 .qh-title-area {
   text-align: center;
-  padding: 32px 0 24px;
+  padding: 80px 0 48px;
 }
 
 .qh-title {
@@ -50,11 +50,7 @@
   text-align: left;
 }
 
-.qh-table tbody tr:nth-child(odd) {
-  background: #e9ecf4;
-}
-
-.qh-table tbody tr:nth-child(even) {
+.qh-table tbody tr {
   background: #fff;
 }
 
@@ -117,29 +113,7 @@
 
 .qh-btn:hover { opacity: 0.8; }
 
-.qh-btn--retry {
-  background: #fff;
-  color: #7697bd;
-}
-
-.qh-btn--retry-alt {
-  background: #e9ecf4;
-  color: #7697bd;
-}
-
-.qh-btn--review {
-  background: #fff;
-  color: #7697bd;
-}
-
-.qh-btn--review-active {
-  background: #afbbda;
-  color: #fff;
-  box-shadow: 0 0 4.8px #2e4fa8;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-}
-
-.qh-btn--review-alt {
+.qh-btn {
   background: #e9ecf4;
   color: #7697bd;
 }

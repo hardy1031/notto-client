@@ -30,6 +30,6 @@ export const api = {
   submitQuizRun: (body: {
     started_at: string
     completed_at: string | null
-    records: { quiz_id: string; user_answer: string; is_correct: boolean }[]
+    records: { quiz_id: string; choices: string[]; user_answer: string; is_correct: boolean }[]
   }) => apiClient.post<QuizRunResponse>('/quiz-runs', body),
 }

@@ -28,9 +28,9 @@ export const quizRecordRepository = {
     for (const record of records) {
       db.run(
         `INSERT OR REPLACE INTO quiz_records
-          (id, quiz_run_id, quiz_id, user_answer, is_correct, created_at)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-        [record.id, record.quiz_run_id, record.quiz_id, record.user_answer, record.is_correct ? 1 : 0, record.created_at],
+          (id, quiz_run_id, quiz_id, choices, user_answer, is_correct, created_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        [record.id, record.quiz_run_id, record.quiz_id, JSON.stringify(record.choices), record.user_answer, record.is_correct ? 1 : 0, record.created_at],
       )
     }
   },
@@ -41,9 +41,10 @@ function rowToQuizRecord(row: SqlValue[]): QuizRecord {
     id: row[0] as string,
     quiz_run_id: row[1] as string,
     quiz_id: row[2] as string,
-    user_answer: row[3] as string,
-    is_correct: row[4] === 1,
-    created_at: row[5] as string,
+    choices: JSON.parse(row[3] as string),
+    user_answer: row[4] as string,
+    is_correct: row[5] === 1,
+    created_at: row[6] as string,
   }
 }
 

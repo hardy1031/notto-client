@@ -9,10 +9,15 @@ import type { ContextObject, Quiz, QuizRecord } from '../types'
 
 const QUIZ_RUN_SIZE = 10
 
+function shuffle<T>(arr: T[]): T[] {
+  return [...arr].sort(() => Math.random() - 0.5)
+}
+
 type RunStatus = 'loading' | 'in_progress' | 'finished'
 
 interface PendingRecord {
   quiz_id: string
+  choices: string[]
   user_answer: string
   is_correct: boolean
 }
@@ -45,8 +50,10 @@ export function useQuizRun() {
     const current = quizzes[currentIndex]
     const isCorrect = userAnswer.trim() === current.answer.trim()
 
+    const choices = shuffle(current.choice_pool).slice(0, 4)
     const record: PendingRecord = {
       quiz_id: current.id,
+      choices,
       user_answer: userAnswer,
       is_correct: isCorrect,
     }
@@ -77,6 +84,7 @@ export function useQuizRun() {
       id: crypto.randomUUID(),
       quiz_run_id: runId,
       quiz_id: r.quiz_id,
+      choices: r.choices,
       user_answer: r.user_answer,
       is_correct: r.is_correct,
       created_at: new Date(Date.now() + i * 1000).toISOString(),

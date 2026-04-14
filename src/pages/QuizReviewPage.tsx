@@ -3,18 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { PageHeader } from '../components/PageHeader'
 import { useSyncStatus } from '../hooks/useSyncContext'
 import { useQuizReview, type ReviewItem } from '../hooks/useQuizReview'
-import type { ContextObject, Quiz, QuizRecord } from '../types'
+import type { Quiz, QuizRecord } from '../types'
 import './shared.css'
 import './quiz-review.css'
 
-function getReviewOptions(quiz: Quiz, allContextObjects: ContextObject[]): string[] {
-  const correct = quiz.answer
-  if (quiz.type === 'fill_metadata' && ['casual', 'neutral', 'formal'].includes(correct)) {
-    return ['casual', 'neutral', 'formal']
-  }
-  const others = allContextObjects.map((co) => co.expression).filter((e) => e !== correct)
-  return [correct, ...others.slice(0, 3)]
-}
 
 function optionColor(opt: string, quiz: Quiz, record: QuizRecord): string {
   if (opt === quiz.answer) return '#9daad1'
@@ -27,20 +19,14 @@ function optionShadow(opt: string, quiz: Quiz): string {
   return 'none'
 }
 
-function QuestionPanel({
-  item,
-  allContextObjects,
-}: {
-  item: ReviewItem
-  allContextObjects: ContextObject[]
-}) {
+function QuestionPanel({ item }: { item: ReviewItem }) {
   const { quiz, record, contextObject } = item
-  const options = getReviewOptions(quiz, allContextObjects)
+  const options = record.choices
 
   return (
-    <div className="qr-left-panel">
-      <p className="qr-question-text">{quiz.question_sentence}</p>
-      <p className="qr-question-sub">
+    <div className="quiz-review-left-panel">
+      <p className="quiz-review-question-text">{quiz.question_sentence}</p>
+      <p className="quiz-review-question-sub">
         {quiz.type === 'choose_context'
           ? 'Choose the expression that best fits the blank'
           : quiz.type === 'choose_pronunciation'
@@ -48,28 +34,28 @@ function QuestionPanel({
           : 'Choose the correct answer'}
       </p>
 
-      <div className="qr-context-card">
-        <div className="qr-context-pins">
-          <div className="qr-context-pin" />
-          <div className="qr-context-pin" />
+      <div className="quiz-review-context-card">
+        <div className="quiz-review-context-pins">
+          <div className="quiz-review-context-pin" />
+          <div className="quiz-review-context-pin" />
         </div>
-        <div className="qr-context-dialogue">
+        <div className="quiz-review-context-dialogue">
           {contextObject.example_dialogue.map((line, i) => {
             const isRight = line.speaker !== 'A'
             return (
-              <div key={i} className={`qr-bubble ${isRight ? 'qr-bubble--right' : ''}`}>
-                <div className="qr-bubble-text">{line.text}</div>
+              <div key={i} className={`quiz-review-bubble ${isRight ? 'quiz-review-bubble--right' : ''}`}>
+                <div className="quiz-review-bubble-text">{line.text}</div>
               </div>
             )
           })}
         </div>
       </div>
 
-      <div className="qr-options-grid">
+      <div className="quiz-review-options-grid">
         {options.map((opt) => (
           <button
             key={opt}
-            className="qr-option"
+            className="quiz-review-option"
             style={{
               background: optionColor(opt, quiz, record),
               boxShadow: optionShadow(opt, quiz),
@@ -85,38 +71,38 @@ function QuestionPanel({
 
 function ContextPanel({ contextObject }: { contextObject: ContextObject }) {
   return (
-    <div className="qr-right-panel">
-      <div className="qr-divider" />
-      <div className="qr-context-info">
-        <h2 className="qr-expression">{contextObject.expression}</h2>
-        <div className="qr-tags">
-          <span className="qr-tag">{contextObject.formality}</span>
-          {contextObject.is_slang && <span className="qr-tag">slang</span>}
+    <div className="quiz-review-right-panel">
+      <div className="quiz-review-divider" />
+      <div className="quiz-review-context-info">
+        <h2 className="quiz-review-expression">{contextObject.expression}</h2>
+        <div className="quiz-review-tags">
+          <span className="quiz-review-tag">{contextObject.formality}</span>
+          {contextObject.is_slang && <span className="quiz-review-tag">slang</span>}
         </div>
 
-        <div className="qr-section">
-          <div className="qr-section-label">Base Meaning</div>
-          <div className="qr-section-value">{contextObject.base_meaning}</div>
+        <div className="quiz-review-section">
+          <div className="quiz-review-section-label">Base Meaning</div>
+          <div className="quiz-review-section-value">{contextObject.base_meaning}</div>
         </div>
 
-        <div className="qr-section">
-          <div className="qr-section-label">Actual Nuance</div>
-          <div className="qr-section-value">{contextObject.actual_nuance}</div>
+        <div className="quiz-review-section">
+          <div className="quiz-review-section-label">Actual Nuance</div>
+          <div className="quiz-review-section-value">{contextObject.actual_nuance}</div>
         </div>
 
-        <div className="qr-section">
-          <div className="qr-section-label">Tone</div>
-          <div className="qr-section-value">{contextObject.tone}</div>
+        <div className="quiz-review-section">
+          <div className="quiz-review-section-label">Tone</div>
+          <div className="quiz-review-section-value">{contextObject.tone}</div>
         </div>
 
-        <div className="qr-section">
-          <div className="qr-section-label">Example Dialogue</div>
-          <div className="qr-dialogue-box">
+        <div className="quiz-review-section">
+          <div className="quiz-review-section-label">Example Dialogue</div>
+          <div className="quiz-review-dialogue-box">
             {contextObject.example_dialogue.map((line, i) => {
               const isRight = line.speaker !== 'A'
               return (
-                <div key={i} className={`qr-info-bubble ${isRight ? 'qr-info-bubble--right' : ''}`}>
-                  <div className="qr-info-bubble-text">{line.text}</div>
+                <div key={i} className={`quiz-review-info-bubble ${isRight ? 'quiz-review-info-bubble--right' : ''}`}>
+                  <div className="quiz-review-info-bubble-text">{line.text}</div>
                 </div>
               )
             })}
@@ -131,13 +117,13 @@ export function QuizReviewPage() {
   const { runId } = useParams<{ runId: string }>()
   const navigate = useNavigate()
   const syncStatus = useSyncStatus()
-  const { items, allContextObjects, loading } = useQuizReview(runId, syncStatus === 'done')
+  const { items, loading } = useQuizReview(runId, syncStatus === 'done')
   const [currentIndex, setCurrentIndex] = useState(0)
 
   if (syncStatus === 'idle' || syncStatus === 'syncing' || loading) {
     return (
       <div className="page-root">
-        <div className="qr-loading">Loading review…</div>
+        <div className="quiz-review-loading">Loading review…</div>
       </div>
     )
   }
@@ -145,7 +131,7 @@ export function QuizReviewPage() {
   if (syncStatus === 'error') {
     return (
       <div className="page-root">
-        <div className="qr-loading">
+        <div className="quiz-review-loading">
           <p>Failed to load data.</p>
           <button onClick={() => navigate('/quiz-history')}>Back</button>
         </div>
@@ -156,7 +142,7 @@ export function QuizReviewPage() {
   if (items.length === 0) {
     return (
       <div className="page-root">
-        <div className="qr-loading">
+        <div className="quiz-review-loading">
           <p>No data found for this quiz run.</p>
           <button onClick={() => navigate('/quiz-history')}>Back</button>
         </div>
@@ -172,10 +158,10 @@ export function QuizReviewPage() {
       <PageHeader activePage="quiz-history" />
 
       {/* Main content with arrows */}
-      <div className="qr-main">
+      <div className="quiz-review-main">
         {/* Left arrow */}
         <button
-          className="qr-arrow qr-arrow--left"
+          className="quiz-review-arrow quiz-review-arrow--left"
           onClick={() => setCurrentIndex((i) => Math.max(0, i - 1))}
           disabled={currentIndex === 0}
           aria-label="Previous question"
@@ -184,14 +170,14 @@ export function QuizReviewPage() {
         </button>
 
         {/* Panels */}
-        <div className="qr-panels">
-          <QuestionPanel item={current} allContextObjects={allContextObjects} />
+        <div className="quiz-review-panels">
+          <QuestionPanel item={current} />
           <ContextPanel contextObject={current.contextObject} />
         </div>
 
         {/* Right arrow */}
         <button
-          className="qr-arrow qr-arrow--right"
+          className="quiz-review-arrow quiz-review-arrow--right"
           onClick={() => setCurrentIndex((i) => Math.min(total - 1, i + 1))}
           disabled={currentIndex === total - 1}
           aria-label="Next question"
@@ -201,11 +187,11 @@ export function QuizReviewPage() {
       </div>
 
       {/* Pagination */}
-      <div className="qr-pagination">
+      <div className="quiz-review-pagination">
         {items.map((_, i) => (
           <button
             key={i}
-            className={`qr-page-dot ${i === currentIndex ? 'qr-page-dot--active' : ''}`}
+            className={`quiz-review-page-dot ${i === currentIndex ? 'quiz-review-page-dot--active' : ''}`}
             onClick={() => setCurrentIndex(i)}
             aria-label={`Question ${i + 1}`}
           >
