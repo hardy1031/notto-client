@@ -14,7 +14,7 @@ export function PageHeader({ activePage }: Props) {
     <header className="page-header">
       <div className="page-logo" onClick={() => navigate('/home')}>
         <span className="page-logo-slash">/</span>
-        <span className="page-logo-name">nOTTO</span>
+        <span className="page-logo-name">NOTTO</span>
       </div>
       <nav className="page-nav">
         <button

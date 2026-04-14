@@ -13,13 +13,21 @@ export function useSync() {
   const sync = useCallback(async () => {
     setStatus('syncing')
     try {
-      const data = await api.sync({ notebooks: [], notes: [], quiz_runs: [] })
-      await contextObjectRepository.bulkInsert(data.context_objects)
-      await quizRepository.bulkInsert(data.quizzes)
-      for (const run of data.quiz_runs) {
-        await quizRunRepository.insert(run)
+      const [contextObjects, quizRuns] = await Promise.all([
+        api.getContextObjects(),
+        api.getQuizRuns(),
+      ])
+
+      for (const contextObject of contextObjects) {
+        await contextObjectRepository.bulkInsert([contextObject])
+        await quizRepository.bulkInsert(contextObject.quizzes)
       }
-      await quizRecordRepository.bulkInsert(data.quiz_records)
+
+      for (const quizRun of quizRuns) {
+        await quizRunRepository.insert(quizRun)
+        await quizRecordRepository.bulkInsert(quizRun.records)
+      }
+
       setStatus('done')
     } catch (e) {
       console.error('[useSync] sync failed:', e)

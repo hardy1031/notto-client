@@ -55,6 +55,7 @@ export interface Quiz {
   type: QuizType
   question_sentence: string
   answer: string
+  choices: string[]
   created_at: string
   updated_at: string
 }

@@ -79,6 +79,7 @@ function runMigrations(db: Database) {
       type TEXT NOT NULL,
       question_sentence TEXT NOT NULL,
       answer TEXT NOT NULL,
+      choices TEXT NOT NULL,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     )

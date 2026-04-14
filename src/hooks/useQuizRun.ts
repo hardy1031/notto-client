@@ -28,14 +28,14 @@ export function useQuizRun() {
 
   useEffect(() => {
     const load = async () => {
-      const [allQuizzes, allRecords, allCOs] = await Promise.all([
+      const [allQuizzes, allRecords, allContextObjects] = await Promise.all([
         quizRepository.findAll(),
         quizRecordRepository.findAll(),
         contextObjectRepository.findAll(),
       ])
       const selected = selectQuizzes(allQuizzes, allRecords, QUIZ_RUN_SIZE)
       setQuizzes(selected)
-      setContextObjects(allCOs)
+      setContextObjects(allContextObjects)
       setStatus('in_progress')
     }
     load()

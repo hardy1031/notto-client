@@ -11,7 +11,7 @@ export function useGenerate() {
   const generate = useCallback(async () => {
     setStatus('generating')
     try {
-      const data = await api.interpret()
+      const data = await api.generate({ notebooks: [], notes: [] })
       for (const item of data.generated) {
         await contextObjectRepository.bulkInsert([item.context_object])
         await quizRepository.bulkInsert(item.quizzes)

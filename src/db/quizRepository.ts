@@ -14,9 +14,9 @@ export const quizRepository = {
     for (const quiz of quizzes) {
       db.run(
         `INSERT OR REPLACE INTO quizzes
-          (id, context_object_id, type, question_sentence, answer, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        [quiz.id, quiz.context_object_id, quiz.type, quiz.question_sentence, quiz.answer, quiz.created_at, quiz.updated_at],
+          (id, context_object_id, type, question_sentence, answer, choices, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [quiz.id, quiz.context_object_id, quiz.type, quiz.question_sentence, quiz.answer, JSON.stringify(quiz.choices), quiz.created_at, quiz.updated_at],
       )
     }
   },
@@ -29,8 +29,9 @@ function rowToQuiz(row: SqlValue[]): Quiz {
     type: row[2] as Quiz['type'],
     question_sentence: row[3] as string,
     answer: row[4] as string,
-    created_at: row[5] as string,
-    updated_at: row[6] as string,
+    choices: JSON.parse(row[5] as string),
+    created_at: row[6] as string,
+    updated_at: row[7] as string,
   }
 }
 
