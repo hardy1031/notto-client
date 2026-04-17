@@ -34,7 +34,7 @@ function ScoreBar({ correct, total }: { correct: number; total: number }) {
 export function QuizHistoryPage() {
   const navigate = useNavigate()
   const syncStatus = useSyncStatus()
-  const { rows } = useQuizHistory(syncStatus === 'done')
+  const { rows } = useQuizHistory(syncStatus)
 
   return (
     <div className="page-root">

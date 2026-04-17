@@ -117,24 +117,13 @@ export function QuizReviewPage() {
   const { runId } = useParams<{ runId: string }>()
   const navigate = useNavigate()
   const syncStatus = useSyncStatus()
-  const { items, loading } = useQuizReview(runId, syncStatus === 'done')
+  const { items, loading } = useQuizReview(runId, syncStatus)
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  if (syncStatus === 'idle' || syncStatus === 'syncing' || loading) {
+  if (loading) {
     return (
       <div className="page-root">
         <div className="quiz-review-loading">Loading review…</div>
-      </div>
-    )
-  }
-
-  if (syncStatus === 'error') {
-    return (
-      <div className="page-root">
-        <div className="quiz-review-loading">
-          <p>Failed to load data.</p>
-          <button onClick={() => navigate('/quiz-history')}>Back</button>
-        </div>
       </div>
     )
   }

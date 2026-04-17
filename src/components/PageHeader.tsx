@@ -5,9 +5,10 @@ type ActivePage = 'home' | 'quiz-history' | 'my-notes' | 'practice'
 
 interface Props {
   activePage?: ActivePage
+  showNav?: boolean
 }
 
-export function PageHeader({ activePage }: Props) {
+export function PageHeader({ activePage, showNav = true }: Props) {
   const navigate = useNavigate()
 
   return (
@@ -16,26 +17,28 @@ export function PageHeader({ activePage }: Props) {
         <span className="page-logo-slash">/</span>
         <span className="page-logo-name">NOTTO</span>
       </div>
-      <nav className="page-nav">
-        <button
-          className={`page-nav-btn${activePage === 'home' ? ' page-nav-btn--active' : ''}`}
-          onClick={() => navigate('/home')}
-        >
-          Home
-        </button>
-        <button
-          className={`page-nav-btn${activePage === 'quiz-history' ? ' page-nav-btn--active' : ''}`}
-          onClick={() => navigate('/quiz-history')}
-        >
-          Quiz History
-        </button>
-        <button
-          className={`page-nav-btn${activePage === 'my-notes' ? ' page-nav-btn--active' : ''}`}
-          onClick={() => navigate('/my-notes')}
-        >
-          My Note
-        </button>
-      </nav>
+      {showNav && (
+        <nav className="page-nav">
+          <button
+            className={`page-nav-btn${activePage === 'home' ? ' page-nav-btn--active' : ''}`}
+            onClick={() => navigate('/home')}
+          >
+            Home
+          </button>
+          <button
+            className={`page-nav-btn${activePage === 'quiz-history' ? ' page-nav-btn--active' : ''}`}
+            onClick={() => navigate('/quiz-history')}
+          >
+            Quiz History
+          </button>
+          <button
+            className={`page-nav-btn${activePage === 'my-notes' ? ' page-nav-btn--active' : ''}`}
+            onClick={() => navigate('/my-notes')}
+          >
+            My Note
+          </button>
+        </nav>
+      )}
       <div className="page-user">
         <span className="page-user-name">AYATO HARDY</span>
         <div className="page-user-avatar" />

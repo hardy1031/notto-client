@@ -1,5 +1,19 @@
-import { getDb } from '.'
+import { getDb, dbRun } from '.'
 import type { QuizRecord } from '../types'
+
+type SqlValue = string | number | null | Uint8Array
+
+function rowToQuizRecord(row: SqlValue[]): QuizRecord {
+  return {
+    id: row[0] as string,
+    quiz_run_id: row[1] as string,
+    quiz_id: row[2] as string,
+    choices: JSON.parse(row[3] as string),
+    user_answer: row[4] as string,
+    is_correct: row[5] === 1,
+    created_at: row[6] as string,
+  }
+}
 
 export const quizRecordRepository = {
   async findAll(): Promise<QuizRecord[]> {
@@ -24,9 +38,8 @@ export const quizRecordRepository = {
   },
 
   async bulkInsert(records: QuizRecord[]): Promise<void> {
-    const db = await getDb()
     for (const record of records) {
-      db.run(
+      await dbRun(
         `INSERT OR REPLACE INTO quiz_records
           (id, quiz_run_id, quiz_id, choices, user_answer, is_correct, created_at)
          VALUES (?, ?, ?, ?, ?, ?, ?)`,
@@ -35,17 +48,3 @@ export const quizRecordRepository = {
     }
   },
 }
-
-function rowToQuizRecord(row: SqlValue[]): QuizRecord {
-  return {
-    id: row[0] as string,
-    quiz_run_id: row[1] as string,
-    quiz_id: row[2] as string,
-    choices: JSON.parse(row[3] as string),
-    user_answer: row[4] as string,
-    is_correct: row[5] === 1,
-    created_at: row[6] as string,
-  }
-}
-
-type SqlValue = string | number | null | Uint8Array

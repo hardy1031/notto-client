@@ -10,33 +10,38 @@ export interface ReviewItem {
   contextObject: ContextObject
 }
 
-export function useQuizReview(runId: string | undefined, syncDone: boolean) {
+export function useQuizReview(runId: string | undefined, syncStatus: 'idle' | 'syncing' | 'done' | 'error') {
   const [items, setItems] = useState<ReviewItem[]>([])
   const [allContextObjects, setAllContextObjects] = useState<ContextObject[]>([])
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
-    if (!syncDone) return
-    const load = async () => {
-      const [records, allQuizzes, allCOs] = await Promise.all([
-        quizRecordRepository.findByRunId(runId ?? ''),
-        quizRepository.findAll(),
-        contextObjectRepository.findAll(),
-      ])
-      setAllContextObjects(allCOs)
-      const built: ReviewItem[] = []
-      for (const record of records) {
-        const quiz = allQuizzes.find((q) => q.id === record.quiz_id)
-        if (!quiz) continue
-        const co = allCOs.find((c) => c.id === quiz.context_object_id)
-        if (!co) continue
-        built.push({ record, quiz, contextObject: co })
-      }
-      setItems(built)
-      setLoading(false)
+  const load = async () => {
+    const [records, allQuizzes, allCOs] = await Promise.all([
+      quizRecordRepository.findByRunId(runId ?? ''),
+      quizRepository.findAll(),
+      contextObjectRepository.findAll(),
+    ])
+    setAllContextObjects(allCOs)
+    const built: ReviewItem[] = []
+    for (const record of records) {
+      const quiz = allQuizzes.find((q) => q.id === record.quiz_id)
+      if (!quiz) continue
+      const co = allCOs.find((c) => c.id === quiz.context_object_id)
+      if (!co) continue
+      built.push({ record, quiz, contextObject: co })
     }
+    setItems(built)
+    setLoading(false)
+  }
+
+  useEffect(() => {
     load()
-  }, [syncDone, runId])
+  }, [runId])
+
+  useEffect(() => {
+    if (syncStatus !== 'done') return
+    load()
+  }, [syncStatus])
 
   return { items, allContextObjects, loading }
 }

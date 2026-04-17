@@ -8,23 +8,28 @@ export interface QuizHistoryRow {
   records: QuizRecord[]
 }
 
-export function useQuizHistory(syncDone: boolean) {
+export function useQuizHistory(syncStatus: 'idle' | 'syncing' | 'done' | 'error') {
   const [rows, setRows] = useState<QuizHistoryRow[]>([])
 
+  const load = async () => {
+    const runs = await quizRunRepository.findAll()
+    const withRecords = await Promise.all(
+      runs.map(async (run) => ({
+        run,
+        records: await quizRecordRepository.findByRunId(run.id),
+      }))
+    )
+    setRows(withRecords)
+  }
+
   useEffect(() => {
-    if (!syncDone) return
-    const load = async () => {
-      const runs = await quizRunRepository.findAll()
-      const withRecords = await Promise.all(
-        runs.map(async (run) => ({
-          run,
-          records: await quizRecordRepository.findByRunId(run.id),
-        }))
-      )
-      setRows(withRecords)
-    }
     load()
-  }, [syncDone])
+  }, [])
+
+  useEffect(() => {
+    if (syncStatus !== 'done') return
+    load()
+  }, [syncStatus])
 
   return { rows }
 }

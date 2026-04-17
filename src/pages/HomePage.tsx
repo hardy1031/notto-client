@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom'
+import { PageHeader } from '../components/PageHeader'
 import './shared.css'
 import './home.css'
 
@@ -7,17 +8,7 @@ export function HomePage() {
 
   return (
     <div className="home-page">
-      {/* Header */}
-      <header className="home-header">
-        <div className="page-logo">
-          <span className="page-logo-slash">/</span>
-          <span className="page-logo-name">nOTTO</span>
-        </div>
-        <div className="page-user">
-          <span className="page-user-name">AYATO HARDY</span>
-          <div className="page-user-avatar" />
-        </div>
-      </header>
+      <PageHeader activePage="home" showNav={false} />
 
       {/* Top decorative section */}
       <div className="home-deco">

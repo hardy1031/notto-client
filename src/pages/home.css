@@ -9,14 +9,6 @@
 }
 
 /* Header */
-.home-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 96px;
-  height: 78px;
-  flex-shrink: 0;
-}
 
 /* Top decorative area */
 .home-deco {

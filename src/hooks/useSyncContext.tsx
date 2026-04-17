@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, type ReactNode } from 'react'
-import { useSync } from './useSync'
+import { useQuizDataSync } from './useQuizDataSync'
 
 type SyncStatus = 'idle' | 'syncing' | 'done' | 'error'
 
 const SyncContext = createContext<SyncStatus>('idle')
 
 export function SyncProvider({ children }: { children: ReactNode }) {
-  const { sync, status } = useSync()
+  const { sync, status } = useQuizDataSync()
 
   useEffect(() => {
     sync()

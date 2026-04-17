@@ -119,8 +119,8 @@ The orchestration layer. Each hook:
 
 | Hook | Responsibility |
 |---|---|
-| `useSync` | `GET /me` → bulk insert into local DB on app load |
-| `useSyncContext` | Wraps `useSync` in a React Context (`SyncProvider` + `useSyncStatus`). `SyncProvider` lives in `App.tsx` and calls `sync()` once at startup. Pages read sync status via `useSyncStatus()`. |
+| `useQuizDataSync` | `GET /context-objects` + `GET /quiz-runs` → bulk insert into local DB on app load |
+| `useSyncContext` | Wraps `useQuizDataSync` in a React Context (`SyncProvider` + `useSyncStatus`). `SyncProvider` lives in `App.tsx` and calls `sync()` once at startup. Pages read sync status via `useSyncStatus()`. |
 | `useQuizHistory` | Load all quiz runs + records from local DB once sync is done |
 | `useQuizReview` | Load records, quizzes, and context objects for a specific run |
 | `useQuizRun` | Load quizzes + context objects, run a session, save results locally, POST to server |

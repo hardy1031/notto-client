@@ -88,14 +88,27 @@ export function useQuizRun() {
     }))
     await quizRecordRepository.bulkInsert(quizRecords)
 
-    // fire-and-forget sync to server
-    api.submitQuizRun({
-      started_at: startedAt,
-      completed_at: completedAt,
-      records: finalRecords,
-    }).catch(() => {
-      // best-effort — local DB is source of truth
-    })
+    // best-effort sync to server — save any runs from other devices
+    api.syncQuizRuns({
+      quiz_runs: [{
+        id: runId,
+        started_at: startedAt,
+        completed_at: completedAt,
+        records: quizRecords.map(r => ({
+          id: r.id,
+          quiz_id: r.quiz_id,
+          choices: r.choices,
+          user_answer: r.user_answer,
+          is_correct: r.is_correct,
+          created_at: r.created_at,
+        })),
+      }],
+    }).then(async (result) => {
+      for (const run of result.quiz_runs) {
+        await quizRunRepository.insert(run)
+        await quizRecordRepository.bulkInsert(run.records)
+      }
+    }).catch(() => {})
   }, [runId, startedAt])
 
   return {

@@ -22,6 +22,7 @@ export interface Notebook {
 export interface Note {
   id: string
   notebook_id: string
+  name: string
   s3_key: string
   created_at: string
   updated_at: string
@@ -30,7 +31,6 @@ export interface Note {
 export interface NotePiece {
   id: string
   note_id: string
-  order: number
   created_at: string
 }
 

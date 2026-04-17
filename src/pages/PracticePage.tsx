@@ -188,13 +188,5 @@ export function PracticePage() {
     )
   }
 
-  if (syncStatus === 'error') {
-    return (
-      <div className="practice-error">
-        <p>Failed to load quiz data. Please try again.</p>
-      </div>
-    )
-  }
-
   return <QuizSession />
 }

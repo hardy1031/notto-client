@@ -1,4 +1,4 @@
-import { getDb } from '.'
+import { getDb, dbRun } from '.'
 import type { QuizRun } from '../types'
 
 export const quizRunRepository = {
@@ -15,8 +15,7 @@ export const quizRunRepository = {
   },
 
   async insert(quizRun: QuizRun): Promise<void> {
-    const db = await getDb()
-    db.run(
+    await dbRun(
       `INSERT OR REPLACE INTO quiz_runs (id, user_id, started_at, completed_at)
        VALUES (?, ?, ?, ?)`,
       [quizRun.id, quizRun.user_id, quizRun.started_at, quizRun.completed_at],
@@ -24,7 +23,6 @@ export const quizRunRepository = {
   },
 
   async complete(id: string, completedAt: string): Promise<void> {
-    const db = await getDb()
-    db.run('UPDATE quiz_runs SET completed_at = ? WHERE id = ?', [completedAt, id])
+    await dbRun('UPDATE quiz_runs SET completed_at = ? WHERE id = ?', [completedAt, id])
   },
 }

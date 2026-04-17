@@ -27,7 +27,7 @@
 /* Table */
 .qh-table-wrap {
   margin: 0 auto;
-  max-width: 70%;
+  width: 70%;
   padding: 0 48px 48px;
 }
 
