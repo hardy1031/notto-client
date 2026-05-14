@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useAuth } from './useAuth'
 import { notebookRepository } from '../db/notebookRepository'
 import { noteRepository, noteContentRepository } from '../db/noteRepository'
 import type { Notebook, Note } from '../types'
 
 export function useMyNotes(syncStatus: 'idle' | 'syncing' | 'done' | 'error') {
+  const { user } = useAuth()
   const [notebooks, setNotebooks] = useState<Notebook[]>([])
   const [selectedNotebookId, setSelectedNotebookId] = useState<string | null>(null)
   const [notes, setNotes] = useState<Note[]>([])
@@ -44,7 +46,7 @@ export function useMyNotes(syncStatus: 'idle' | 'syncing' | 'done' | 'error') {
     const now = new Date().toISOString()
     const notebook: Notebook = {
       id: crypto.randomUUID(),
-      user_id: 'mock-user-uuid',
+      user_id: user?.id ?? '',
       name,
       created_at: now,
       updated_at: now,

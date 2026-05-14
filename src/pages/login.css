@@ -113,3 +113,55 @@
 .login-btn:hover {
   background: #3a8fe8;
 }
+
+.login-btn:disabled {
+  background: #9daad1;
+  cursor: not-allowed;
+}
+
+.login-select {
+  width: 100%;
+  height: 48px;
+  border: 1.5px solid #bfcad7;
+  border-radius: 8px;
+  padding: 0 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #213163;
+  background: #fff;
+  box-sizing: border-box;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.login-select:focus {
+  border-color: #51a2ff;
+}
+
+.login-error {
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #e05252;
+  margin: 0;
+  text-align: center;
+}
+
+.login-switch {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  color: #9daad1;
+  margin: 0;
+  text-align: center;
+}
+
+.login-switch a {
+  color: #51a2ff;
+  text-decoration: none;
+}
+
+.login-switch a:hover {
+  text-decoration: underline;
+}

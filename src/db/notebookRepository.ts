@@ -29,7 +29,7 @@ export const notebookRepository = {
     )
   },
 
-  async bulkInsert(notebooks: Partial<Notebook>[]): Promise<void> {
-    for (const nb of notebooks) await this.insert({ user_id: 'mock-user-uuid', ...nb } as Notebook)
+  async bulkInsert(notebooks: Notebook[]): Promise<void> {
+    for (const nb of notebooks) await this.insert(nb)
   },
 }

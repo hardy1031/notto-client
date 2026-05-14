@@ -1,6 +1,26 @@
 import { apiClient } from './client'
 import type { User, Notebook, Note, ContextObject, Quiz, QuizRun, QuizRecord } from '../types'
 
+// POST /auth/register
+export interface AuthRegisterRequest {
+  user_name: string
+  email: string
+  password: string
+  first_language: string
+  target_language: string
+}
+
+// POST /auth/login
+export interface AuthLoginRequest {
+  email: string
+  password: string
+}
+
+export interface AuthResponse {
+  token: string
+  user: User
+}
+
 // POST /sync/notebooks
 export interface SyncNotebooksRequest {
   notebooks: Pick<Notebook, 'id' | 'name' | 'created_at' | 'updated_at'>[]
@@ -47,8 +67,17 @@ export interface LearnResponse {
 }
 
 export const api = {
+  register: (body: AuthRegisterRequest) =>
+    apiClient.post<AuthResponse>('/auth/register', body),
+
+  login: (body: AuthLoginRequest) =>
+    apiClient.post<AuthResponse>('/auth/login', body),
+
+  logout: () =>
+    apiClient.post<void>('/auth/logout'),
+
   getUser: () =>
-    apiClient.get<{ user: User }>('/auth/me'),
+    apiClient.get<{ user: User }>('/users/me'),
 
   syncNotebooks: (body: SyncNotebooksRequest) =>
     apiClient.post<SyncNotebooksResponse>('/sync/notebooks', body),

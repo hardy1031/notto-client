@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { useAuth } from './useAuth'
 import { api } from '../api'
 import { contextObjectRepository } from '../db/contextObjectRepository'
 import { quizRepository } from '../db/quizRepository'
@@ -21,6 +22,7 @@ interface PendingRecord {
 
 
 export function useQuizRun() {
+  const { user } = useAuth()
   const [status, setStatus] = useState<RunStatus>('loading')
   const [quizzes, setQuizzes] = useState<Quiz[]>([])
   const [contextObjects, setContextObjects] = useState<ContextObject[]>([])
@@ -72,7 +74,7 @@ export function useQuizRun() {
     // save to local DB
     await quizRunRepository.insert({
       id: runId,
-      user_id: 'mock-user-uuid',
+      user_id: user?.id ?? '',
       started_at: startedAt,
       completed_at: completedAt,
     })
